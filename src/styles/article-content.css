@@ -1,0 +1,380 @@
+/* Styles for article content */
+.article-content {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Article content wrapper for better consistency */
+.article-content-wrapper {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.6;
+  color: #334155;
+}
+
+.article-content-wrapper .article-content {
+  max-width: none;
+}
+
+/* Ensure consistent styling between admin preview and guest view */
+.article-content-wrapper .article-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.article-content-wrapper .article-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Handle empty paragraphs and line breaks properly */
+.article-content-wrapper .article-content p:empty {
+  margin-bottom: 1rem;
+  min-height: 1em;
+}
+
+.article-content-wrapper .article-content br {
+  line-height: 1.7;
+}
+
+/* Ensure proper spacing for consecutive paragraphs */
+.article-content-wrapper .article-content p + p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* Handle paragraphs with inline styles from editor */
+.article-content-wrapper .article-content p[style] {
+  margin-bottom: 1rem !important;
+}
+
+/* Also update regular article-content for consistency */
+.article-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.article-content p:last-child {
+  margin-bottom: 0;
+}
+
+.article-content p:empty {
+  margin-bottom: 1rem;
+  min-height: 1em;
+}
+
+.article-content p + p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.article-content p[style] {
+  margin-bottom: 1rem !important;
+}
+
+/* Headings */
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  line-height: 1.3;
+}
+
+.article-content h1 {
+  font-size: 2rem;
+}
+.article-content h2 {
+  font-size: 1.75rem;
+}
+.article-content h3 {
+  font-size: 1.5rem;
+}
+.article-content h4 {
+  font-size: 1.25rem;
+}
+.article-content h5 {
+  font-size: 1.125rem;
+}
+.article-content h6 {
+  font-size: 1rem;
+}
+
+/* Table styles */
+.article-content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse !important;
+  border: 1px solid #ddd !important;
+}
+
+.article-content-wrapper .article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 1px solid #d1d5db;
+}
+
+.article-content table th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: 1px solid #ddd !important;
+  text-align: left;
+}
+
+.article-content-wrapper .article-content th {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.article-content table td {
+  padding: 0.75rem;
+  border: 1px solid #ddd !important;
+  vertical-align: top;
+}
+
+.article-content-wrapper .article-content td {
+  border: 1px solid #d1d5db;
+  padding: 0.75rem;
+  vertical-align: top;
+}
+
+.article-content table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.article-content table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive table container */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+/* List styles */
+.article-content ul,
+.article-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.article-content ul {
+  list-style-type: disc;
+}
+
+.article-content ol {
+  list-style-type: decimal;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+}
+
+.article-content-wrapper .article-content ul,
+.article-content-wrapper .article-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.article-content-wrapper .article-content ul {
+  list-style-type: disc;
+}
+
+.article-content-wrapper .article-content ol {
+  list-style-type: decimal;
+}
+
+.article-content-wrapper .article-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+/* Support different list styles */
+.article-content-wrapper .article-content ul[style*="list-style-type: circle"] {
+  list-style-type: circle;
+}
+
+.article-content-wrapper .article-content ul[style*="list-style-type: square"] {
+  list-style-type: square;
+}
+
+.article-content-wrapper .article-content ul[style*="list-style-type: none"] {
+  list-style-type: none;
+}
+
+.article-content-wrapper
+  .article-content
+  ol[style*="list-style-type: lower-alpha"] {
+  list-style-type: lower-alpha;
+}
+
+.article-content-wrapper
+  .article-content
+  ol[style*="list-style-type: upper-alpha"] {
+  list-style-type: upper-alpha;
+}
+
+.article-content-wrapper
+  .article-content
+  ol[style*="list-style-type: lower-roman"] {
+  list-style-type: lower-roman;
+}
+
+.article-content-wrapper
+  .article-content
+  ol[style*="list-style-type: upper-roman"] {
+  list-style-type: upper-roman;
+}
+
+/* Image styles */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+  margin: 1.5rem 0;
+}
+
+.article-content-wrapper .article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Block quote */
+.article-content blockquote {
+  border-left: 4px solid #b87817;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #555;
+  font-style: italic;
+}
+
+.article-content-wrapper .article-content blockquote {
+  border-left: 4px solid #b87817;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #64748b;
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* Code blocks */
+.article-content pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content-wrapper .article-content pre {
+  background-color: #f1f5f9;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content code {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.article-content-wrapper .article-content code {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #f1f5f9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+/* Links */
+.article-content a {
+  color: #b87817;
+  text-decoration: underline;
+}
+
+.article-content a:hover {
+  color: #8a5a12;
+}
+
+.article-content-wrapper .article-content a {
+  color: #b87817;
+  text-decoration: underline;
+}
+
+.article-content-wrapper .article-content a:hover {
+  color: #92610f;
+}
+
+/* Miscellaneous */
+.article-content-wrapper .article-content strong,
+.article-content-wrapper .article-content b {
+  font-weight: 600;
+}
+
+.article-content-wrapper .article-content em,
+.article-content-wrapper .article-content i {
+  font-style: italic;
+}
+
+.article-content-wrapper .article-content hr {
+  border: none;
+  border-top: 1px solid #d1d5db;
+  margin: 2rem 0;
+}
+
+/* Jodit Editor additional styles to match output */
+.jodit-wysiwyg table {
+  border: 1px solid #ddd !important;
+  border-collapse: collapse !important;
+}
+
+.jodit-wysiwyg th,
+.jodit-wysiwyg td {
+  border: 1px solid #ddd !important;
+  padding: 0.75rem !important;
+}
+
+.jodit-wysiwyg tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Ensure lists work properly in editor - support different styles */
+.jodit-wysiwyg ul,
+.article-content ul {
+  margin: 1rem 0 !important;
+  padding-left: 2rem !important;
+}
+
+.jodit-wysiwyg ol,
+.article-content ol {
+  margin: 1rem 0 !important;
+  padding-left: 2rem !important;
+}
+
+.jodit-wysiwyg li,
+.article-content li {
+  display: list-item !important;
+  margin-bottom: 0.5rem !important;
+}

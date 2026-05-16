@@ -1,0 +1,100 @@
+/* Modal z-index hierarchy - highest priority */
+[data-modal-backdrop] {
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+
+[data-modal] {
+  z-index: 100000 !important;
+  position: fixed !important;
+}
+
+/* When modal is open, reduce JoditEditor z-index */
+body.modal-is-open .jodit-container {
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+body.modal-is-open .jodit-workplace {
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+body.modal-is-open .jodit-toolbar {
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+body.modal-is-open .jodit-wysiwyg {
+  pointer-events: none !important;
+}
+
+/* Ensure all JoditEditor components stay below modal when modal is open */
+body.modal-is-open .jodit-toolbar-collection,
+body.modal-is-open .jodit-popup,
+body.modal-is-open .jodit-dialog,
+body.modal-is-open .jodit-toolbar-popup,
+body.modal-is-open .jodit-toolbar-list,
+body.modal-is-open .jodit-ui-list,
+body.modal-is-open .jodit-ui-popup,
+body.modal-is-open .jodit-toolbar-button__list,
+body.modal-is-open .jodit-color-picker,
+body.modal-is-open .jodit-filebrowser,
+body.modal-is-open .jodit-ui-dialog {
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+/* Normal JoditEditor z-index when no modal is open */
+body:not(.modal-is-open) .jodit-container {
+  z-index: 9999 !important;
+}
+
+body:not(.modal-is-open) .jodit-toolbar-collection {
+  z-index: 9999 !important;
+}
+
+body:not(.modal-is-open) .jodit-popup {
+  z-index: 10000 !important;
+}
+
+body:not(.modal-is-open) .jodit-dialog {
+  z-index: 10000 !important;
+}
+
+/* Flowbite modal specific overrides */
+.fixed.inset-0.z-50 {
+  z-index: 99999 !important;
+}
+
+.relative.bg-white.rounded-lg.shadow {
+  z-index: 100000 !important;
+}
+
+/* Custom modal wrapper for higher z-index */
+.modal-wrapper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-content-wrapper {
+  z-index: 100000 !important;
+  position: relative !important;
+  background: white !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  max-width: 32rem !important;
+  width: 100% !important;
+  margin: 1rem !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}

@@ -1,0 +1,254 @@
+/* Custom styles for Jodit Editor to prevent modal closing */
+.jodit-workplace {
+  z-index: 10000 !important;
+}
+
+.jodit-toolbar {
+  z-index: 10001 !important;
+}
+
+.jodit-toolbar__box {
+  z-index: 10001 !important;
+}
+
+.jodit-popup {
+  z-index: 10002 !important;
+}
+
+/* Ensure all toolbar dropdowns and popups appear above modal */
+.jodit-toolbar-popup,
+.jodit-toolbar-list,
+.jodit-toolbar-collection,
+.jodit-ui-list,
+.jodit-ui-popup {
+  z-index: 10003 !important;
+}
+
+/* Specific styling for dropdown lists */
+.jodit-toolbar-button__list {
+  z-index: 10003 !important;
+}
+
+/* Color picker and other complex popups */
+.jodit-color-picker,
+.jodit-filebrowser,
+.jodit-ui-dialog {
+  z-index: 10004 !important;
+}
+
+.jodit .jodit-ui-input {
+  pointer-events: auto !important;
+}
+
+.jodit-container {
+  margin-bottom: 0 !important;
+  position: relative !important;
+}
+
+/* Make sure editor is fully interactive */
+.jodit * {
+  pointer-events: auto !important;
+}
+
+/* Ensure content area is clickable */
+.jodit-wysiwyg {
+  pointer-events: auto !important;
+  cursor: text !important;
+  min-height: 300px;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Custom wrapper to add margin and border */
+.jodit-editor-wrapper {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  overflow: visible !important;
+  border: 1px solid;
+  position: relative !important;
+  z-index: 10000 !important;
+}
+
+/* Keep focus in the editor */
+.jodit-container:not(.jodit_inline) {
+  border: none !important;
+}
+
+/* Prevent editor from losing focus */
+.jodit-container.jodit_focused {
+  border: none !important;
+}
+
+/* Ensure toolbar buttons work properly */
+.jodit-toolbar-button {
+  pointer-events: auto !important;
+  position: relative !important;
+}
+
+/* Fix for specific dropdown menus */
+.jodit-toolbar-button__list,
+.jodit-toolbar-popup__list {
+  position: absolute !important;
+  background: white !important;
+  border: 1px solid #ccc !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Prevent modal backdrop from interfering */
+.jodit-container * {
+  position: relative !important;
+}
+
+/* Fix for font size, font family and other complex dropdowns */
+.jodit-ui-popup__content {
+  z-index: 10003 !important;
+  position: relative !important;
+}
+
+/* List styles for Jodit Editor - make lists visible in editor */
+.jodit-wysiwyg ul {
+  margin: 0.25rem 0 !important;
+  padding-left: 2rem !important;
+}
+
+.jodit-wysiwyg ol {
+  margin: 0.25rem 0 !important;
+  padding-left: 2rem !important;
+}
+
+.jodit-wysiwyg li {
+  display: list-item !important;
+  margin-bottom: 0.1rem !important;
+  padding-left: 0.25rem !important;
+}
+
+/* Support for different unordered list styles */
+.jodit-wysiwyg ul[style*="list-style-type: disc"],
+.jodit-wysiwyg ul:not([style*="list-style-type"]) {
+  list-style-type: disc !important;
+}
+
+.jodit-wysiwyg ul[style*="list-style-type: circle"] {
+  list-style-type: circle !important;
+}
+
+.jodit-wysiwyg ul[style*="list-style-type: square"] {
+  list-style-type: square !important;
+}
+
+.jodit-wysiwyg ul[style*="list-style-type: none"] {
+  list-style-type: none !important;
+}
+
+/* Support for different ordered list styles */
+.jodit-wysiwyg ol[style*="list-style-type: decimal"],
+.jodit-wysiwyg ol:not([style*="list-style-type"]) {
+  list-style-type: decimal !important;
+}
+
+.jodit-wysiwyg ol[style*="list-style-type: lower-alpha"] {
+  list-style-type: lower-alpha !important;
+}
+
+.jodit-wysiwyg ol[style*="list-style-type: upper-alpha"] {
+  list-style-type: upper-alpha !important;
+}
+
+.jodit-wysiwyg ol[style*="list-style-type: lower-roman"] {
+  list-style-type: lower-roman !important;
+}
+
+.jodit-wysiwyg ol[style*="list-style-type: upper-roman"] {
+  list-style-type: upper-roman !important;
+}
+
+/* Nested lists - allow natural inheritance */
+.jodit-wysiwyg ul ul,
+.jodit-wysiwyg ol ol {
+  margin: 0.1rem 0 !important;
+}
+
+/* Ensure list items have proper spacing and bullets */
+.jodit-wysiwyg ul li::marker,
+.jodit-wysiwyg ol li::marker {
+  color: #333 !important;
+  font-weight: normal !important;
+}
+
+/* Ensure proper display for list containers */
+.jodit-wysiwyg ul,
+.jodit-wysiwyg ol {
+  display: block !important;
+  position: relative !important;
+}
+
+/* Fix for list item display */
+.jodit-wysiwyg li {
+  display: list-item !important;
+  text-align: -webkit-match-parent !important;
+  list-style-position: outside !important;
+}
+
+/* Ensure proper paragraph spacing in editor matches output */
+.jodit-wysiwyg p {
+  margin-bottom: 1rem !important;
+  line-height: 1.7 !important;
+}
+
+.jodit-wysiwyg p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.jodit-wysiwyg p:empty {
+  margin-bottom: 1rem !important;
+  min-height: 1em !important;
+}
+
+.jodit-wysiwyg p + p {
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Handle line breaks properly */
+.jodit-wysiwyg br {
+  line-height: 1.7 !important;
+}
+
+/* Ensure div elements used as paragraphs also get proper spacing */
+.jodit-wysiwyg div {
+  margin-bottom: 1rem !important;
+  line-height: 1.7 !important;
+}
+
+.jodit-wysiwyg div:last-child {
+  margin-bottom: 0 !important;
+}
+
+body.modal-is-open .jodit-editor-wrapper {
+  z-index: 0 !important;
+}
+
+/* Ensure sub-editors work properly */
+.jodit-container:not(.jodit_inline) .jodit-wysiwyg {
+  min-height: 200px !important;
+}
+
+/* Handle multiple editors on same page */
+.jodit-container + .jodit-container {
+  margin-top: 1rem !important;
+}
+
+/* Sub-editor specific styling */
+.jodit-container[data-editor-index] {
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+body.modal-is-open .jodit-container[data-editor-index] {
+  z-index: 0 !important;
+}
+
+/* Ensure sub-editors have proper spacing */
+div[id*="sub-deskripsi"] .jodit-container {
+  margin-top: 0.5rem !important;
+}
