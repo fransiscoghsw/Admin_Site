@@ -4,16 +4,8 @@ import { PiNotePencilBold, PiTrashBold } from "react-icons/pi";
 import { Tooltip } from "flowbite-react";
 
 const FaqAdminItem = (props) => {
-    const {
-        id,
-        pertanyaan,
-        jawaban,
-        pertanyaanEn,
-        jawabanEn,
-        status,
-        openModal,
-        handleToggleStatus,
-    } = props;
+    const { id, pertanyaan, jawaban, status, openModal, handleToggleStatus } =
+        props;
     return (
         <div className="bg-white flex flex-col gap-2 py-3 px-6 rounded-2xl shadow-lg">
             <div className="flex justify-between items-center mb-1">
@@ -30,8 +22,6 @@ const FaqAdminItem = (props) => {
                                 id,
                                 pertanyaan,
                                 jawaban,
-                                pertanyaanEn,
-                                jawabanEn,
                             })
                         }
                     />
@@ -55,7 +45,9 @@ const FaqAdminItem = (props) => {
                             handleToggleStatus={() =>
                                 handleToggleStatus(
                                     id,
-                                    status === "aktif" ? "tidak-aktif" : "aktif"
+                                    status === "aktif"
+                                        ? "tidak-aktif"
+                                        : "aktif",
                                 )
                             }
                         />

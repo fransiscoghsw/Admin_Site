@@ -160,14 +160,12 @@ const KontenArtikel = (props) => {
         if (validateForm(modalType)) {
             const form = new FormData();
             form.append("judul", formArticle.judul);
-            form.append("judulEn", formArticle.judulEn);
             form.append("penulis", formArticle.penulis);
             form.append(
                 "tags",
                 (formArticle.tags || []).map((articleTag) => articleTag.id),
             );
             form.append("deskripsi", formArticle.deskripsi);
-            form.append("deskripsiEn", formArticle.deskripsiEn);
             form.append("gambar", formArticle.gambar);
             form.append("tanggal", formArticle.tanggal);
 
@@ -183,14 +181,12 @@ const KontenArtikel = (props) => {
         if (validateForm(modalType)) {
             const form = new FormData();
             form.append("judul", formArticle.judul);
-            form.append("judulEn", formArticle.judulEn);
             form.append("penulis", formArticle.penulis);
             form.append(
                 "tags",
                 (formArticle.tags || []).map((articleTag) => articleTag.id),
             );
             form.append("deskripsi", formArticle.deskripsi);
-            form.append("deskripsiEn", formArticle.deskripsiEn);
             form.append("tanggal", formArticle.tanggal);
 
             if (formArticle.gambar instanceof File) {

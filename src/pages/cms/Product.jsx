@@ -50,7 +50,7 @@ const Product = () => {
             await deleteProduct(id);
             showToast("Produk berhasil dihapus");
             setProducts((prevProducts) =>
-                prevProducts.filter((product) => product.id !== id)
+                prevProducts.filter((product) => product.id !== id),
             );
         } catch (error) {
             console.error("Error deleting product:", error);
@@ -73,16 +73,15 @@ const Product = () => {
 
     // Filter berdasarkan search term
     const filteredProducts = products.filter((product) =>
-        [product.name, product.price].some((field) =>
-            field?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        [product.name].some((field) =>
+            field?.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
     );
 
     // Definisi kolom tabel
     const columnTable = [
         { key: "id", label: "ID" },
         { key: "name", label: "Nama" },
-        { key: "price", label: "Harga" },
     ];
 
     return (

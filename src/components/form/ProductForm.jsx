@@ -17,12 +17,8 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         name: "",
-        nameEn: "",
         description: "",
-        descriptionEn: "",
         image: null,
-        price: "",
-        quantity: "",
     });
 
     // Reset form data setiap kali initialData berubah
@@ -32,12 +28,8 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
                 // Set data awal
                 setFormData({
                     name: initialData?.name || "",
-                    nameEn: initialData?.nameEn || "",
                     description: initialData?.description || "",
-                    descriptionEn: initialData?.descriptionEn || "",
                     image: null,
-                    price: initialData?.price || "",
-                    quantity: initialData?.quantity || "",
                 });
             } catch (error) {
                 console.error("Gagal mengambil data produk:", error);
@@ -53,26 +45,12 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
         if (!formData.name.trim()) {
             newErrors.name = "Nama produk wajib diisi";
         }
-        if (!formData.nameEn.trim()) {
-            newErrors.nameEn = "Nama produk (Inggris) wajib diisi";
-        }
         if (!formData.description.trim()) {
             newErrors.description = "Deskripsi produk wajib diisi";
-        }
-        if (!formData.descriptionEn.trim()) {
-            newErrors.descriptionEn = "Deskripsi produk (Inggris) wajib diisi";
         }
         if (!formData.image) {
             newErrors.image = "Gambar produk wajib diupload";
         }
-        if (!formData.price || formData.price <= 0) {
-            newErrors.price =
-                "Harga produk wajib diisi dengan nilai lebih dari 0";
-        }
-        if (!formData.quantity || formData.quantity < 0) {
-            newErrors.quantity = "Jumlah produk tidak boleh negatif";
-        }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -113,11 +91,7 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
 
         const formDataToSend = new FormData();
         formDataToSend.append("name", formData.name);
-        formDataToSend.append("nameEn", formData.nameEn);
         formDataToSend.append("description", formData.description);
-        formDataToSend.append("descriptionEn", formData.descriptionEn);
-        formDataToSend.append("price", formData.price);
-        formDataToSend.append("quantity", formData.quantity);
 
         // Tambahkan gambar ke FormData
         if (formData.image) {
@@ -158,20 +132,6 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
                     </div>
 
                     <div>
-                        <Label htmlFor="nameEn" value="Nama Produk (Inggris)" />
-                        <Input
-                            type="text"
-                            name="nameEn"
-                            placeholder="Masukkan nama produk.."
-                            variant="primary-outline"
-                            value={formData.nameEn}
-                            handleChange={handleChange}
-                            isError={!!errors.nameEn}
-                        />
-                        <InputError message={errors.nameEn} />
-                    </div>
-
-                    <div>
                         <Label htmlFor="description" value="Deskripsi Produk" />
                         <ReactQuill
                             theme="snow"
@@ -187,27 +147,6 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
                             }`}
                         />
                         <InputError message={errors.description} />
-                    </div>
-
-                    <div className="mt-12">
-                        <Label
-                            htmlFor="descriptionEn"
-                            value="Deskripsi Produk (Inggris)"
-                        />
-                        <ReactQuill
-                            theme="snow"
-                            value={formData.descriptionEn}
-                            onChange={(value) =>
-                                handleQuillChange(value, "descriptionEn")
-                            }
-                            modules={modules}
-                            className={`bg-white ${
-                                errors.descriptionEn
-                                    ? "border-red-500"
-                                    : "border-gray-300"
-                            }`}
-                        />
-                        <InputError message={errors.descriptionEn} />
                     </div>
 
                     <div>
@@ -233,34 +172,6 @@ const ProductForm = ({ initialData = {}, onSubmit, onClose }) => {
                                 />
                             </div>
                         )}
-                    </div>
-
-                    <div>
-                        <Label htmlFor="price" value="Harga Produk" />
-                        <Input
-                            type="number"
-                            name="price"
-                            placeholder="Masukkan harga produk.."
-                            variant="primary-outline"
-                            value={formData.price}
-                            handleChange={handleChange}
-                            isError={!!errors.price}
-                        />
-                        <InputError message={errors.price} />
-                    </div>
-
-                    <div>
-                        <Label htmlFor="quantity" value="Jumlah Produk" />
-                        <Input
-                            type="number"
-                            name="quantity"
-                            placeholder="Masukkan jumlah produk.."
-                            variant="primary-outline"
-                            value={formData.quantity}
-                            handleChange={handleChange}
-                            isError={!!errors.quantity}
-                        />
-                        <InputError message={errors.quantity} />
                     </div>
                 </form>
             </Modal.Body>

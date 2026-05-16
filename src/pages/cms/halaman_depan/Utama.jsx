@@ -58,18 +58,8 @@ const Utama = () => {
             type: "text",
         },
         {
-            label: "Judul (Bahasa Inggris)",
-            name: "titleEn",
-            type: "text",
-        },
-        {
             label: "Sub Judul",
             name: "subTitle",
-            type: "text",
-        },
-        {
-            label: "Sub Judul (Bahasa Inggris)",
-            name: "subTitleEn",
             type: "text",
         },
     ];

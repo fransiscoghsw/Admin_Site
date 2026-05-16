@@ -21,9 +21,7 @@ const AdminFaq = () => {
     const [faqs, setFaqs] = useState([]);
     const [formData, setFormData] = useState({
         pertanyaan: "",
-        pertanyaanEn: "",
         jawaban: "",
-        jawabanEn: "",
         status: "",
     });
     const [selectedFaq, setSelectedFaq] = useState(null);
@@ -83,9 +81,7 @@ const AdminFaq = () => {
         if (validateForm()) {
             const dataToSend = {
                 pertanyaan: formData.pertanyaan,
-                pertanyaanEn: formData.pertanyaanEn,
                 jawaban: formData.jawaban,
-                jawabanEn: formData.jawabanEn,
                 status: "tidak-aktif",
             };
 
@@ -100,9 +96,7 @@ const AdminFaq = () => {
     const handleUpdateFaq = () => {
         const dataToSend = {
             pertanyaan: formData.pertanyaan,
-            pertanyaanEn: formData.pertanyaanEn,
             jawaban: formData.jawaban,
-            jawabanEn: formData.jawabanEn,
         };
 
         updateFaq(selectedFaq.id, dataToSend, (updateData) => {
@@ -181,8 +175,6 @@ const AdminFaq = () => {
             setFormData({
                 pertanyaan: faq.pertanyaan,
                 jawaban: faq.jawaban,
-                pertanyaanEn: faq.pertanyaanEn,
-                jawabanEn: faq.jawabanEn,
             });
         } else if (type === "delete_faq" && faq) {
             setSelectedFaq(faq);
@@ -285,23 +277,6 @@ const AdminFaq = () => {
                                     <InputError message={errors.pertanyaan} />
 
                                     <Label
-                                        htmlFor={"pertanyaanEn"}
-                                        value={"Pertanyaan (Bahasa Inggris)"}
-                                    />
-                                    <Input
-                                        type={"text"}
-                                        name={"pertanyaanEn"}
-                                        placeholder={
-                                            "Masukkan pertanyaan dalam bahasa Inggris.."
-                                        }
-                                        variant={"primary-outline"}
-                                        value={formData.pertanyaanEn}
-                                        handleChange={handleInputChange}
-                                        isError={!!errors.pertanyaanEn}
-                                    />
-                                    <InputError message={errors.pertanyaanEn} />
-
-                                    <Label
                                         htmlFor={"jawaban"}
                                         value={"Jawaban"}
                                     />
@@ -315,23 +290,6 @@ const AdminFaq = () => {
                                         isError={!!errors.jawaban}
                                     />
                                     <InputError message={errors.jawaban} />
-
-                                    <Label
-                                        htmlFor={"jawabanEn"}
-                                        value={"JawabanEn (Bahasa Inggris)"}
-                                    />
-                                    <Textarea
-                                        name={"jawabanEn"}
-                                        placeholder={
-                                            "Masukkan jawaban dalam bahasa Inggris.."
-                                        }
-                                        rows={3}
-                                        variant={"primary-outline"}
-                                        value={formData.jawabanEn}
-                                        handleChange={handleInputChange}
-                                        isError={!!errors.jawabanEn}
-                                    />
-                                    <InputError message={errors.jawabanEn} />
                                 </Modal.Body>
                                 <Modal.Footer
                                     action={

@@ -63,26 +63,20 @@ const Profil = () => {
 
     const [formData, setFormData] = useState({
         judul: "",
-        judul_en: "",
         image_background: null,
         deskripsi_tentang_kami: "",
-        deskripsi_tentang_kami_en: "",
     });
 
     const [sejarahData, setSejarahData] = useState({
         judul_sejarah: "",
-        judul_sejarah_en: "",
         deskripsi_sejarah: "",
-        deskripsi_sejarah_en: "",
     });
 
     const [founders, setFounders] = useState([]);
     const [formFounder, setFormFounder] = useState({
         nama: "",
         jabatan: "",
-        jabatanEn: "",
         deskripsi: "",
-        deskripsiEn: "",
         gambar: null,
     });
     const [showFormFounder, setShowFormFounder] = useState(false);
@@ -107,10 +101,8 @@ const Profil = () => {
         getAbouts((data) => {
             setFormData({
                 judul: data.judul || "",
-                judul_en: data.judulEn || "", // Perhatikan mapping dari judulEn ke judul_en
                 image_background: data.image_background || "",
                 deskripsi_tentang_kami: data.deskripsi || "",
-                deskripsi_tentang_kami_en: data.deskripsiEn || "",
             });
             setImagePreview(
                 `${import.meta.env.VITE_API_URL}/tentang-kami/image/${
@@ -122,9 +114,7 @@ const Profil = () => {
         getAboutSejarahs((data) => {
             setSejarahData({
                 judul_sejarah: data.judul || "",
-                judul_sejarah_en: data.judulEn || "",
                 deskripsi_sejarah: data.deskripsi || "",
-                deskripsi_sejarah_en: data.deskripsiEn || "",
             });
         });
 
@@ -132,9 +122,7 @@ const Profil = () => {
             const foundersData = data.data.map((founder) => ({
                 nama: founder.nama || "",
                 jabatan: founder.jabatan || "",
-                jabatan_en: founder.jabatanEn || "",
                 deskripsi_founder: founder.deskripsi || "",
-                deskripsi_founder_en: founder.deskripsiEn || "",
                 gambar: founder.gambar || null,
                 gambarPreview: `${import.meta.env.VITE_API_URL}/founder/image/${
                     founder.gambar
@@ -191,9 +179,7 @@ const Profil = () => {
         const form = new FormData();
         form.append("nama", formFounder.nama);
         form.append("jabatan", formFounder.jabatan);
-        form.append("jabatanEn", formFounder.jabatanEn);
         form.append("deskripsi", formFounder.deskripsi);
-        form.append("deskripsiEn", formFounder.deskripsiEn);
         form.append("gambar", formFounder.gambar);
 
         addFounder(form, (response) => {
@@ -212,9 +198,7 @@ const Profil = () => {
             setFormFounder({
                 nama: "",
                 jabatan: "",
-                jabatanEn: "",
                 deskripsi: "",
-                deskripsiEn: "",
                 gambar: null,
             });
             setImagePreviewForm(null);
@@ -230,9 +214,7 @@ const Profil = () => {
         setFormFounder({
             nama: founder.nama,
             jabatan: founder.jabatan,
-            jabatanEn: founder.jabatanEn,
             deskripsi: founder.deskripsi,
-            deskripsiEn: founder.deskripsiEn,
             gambar: founder.gambar,
         });
     };
@@ -242,9 +224,7 @@ const Profil = () => {
         const form = new FormData();
         form.append("nama", formFounder.nama);
         form.append("jabatan", formFounder.jabatan);
-        form.append("jabatanEn", formFounder.jabatanEn);
         form.append("deskripsi", formFounder.deskripsi);
-        form.append("deskripsiEn", formFounder.deskripsiEn);
         if (formFounder.gambar instanceof File) {
             form.append("gambar", formFounder.gambar);
         }
@@ -440,9 +420,7 @@ const Profil = () => {
         const form = new FormData();
 
         form.append("judul", formData.judul);
-        form.append("judulEn", formData.judul_en); // Make sure this matches your state
         form.append("deskripsi", formData.deskripsi_tentang_kami);
-        form.append("deskripsiEn", formData.deskripsi_tentang_kami_en);
 
         if (formData.image_background) {
             form.append("image_background", formData.image_background);
@@ -468,8 +446,6 @@ const Profil = () => {
         console.log("Data sebelum dikirim:", sejarahData);
         form.append("judul", sejarahData.judul_sejarah);
         form.append("deskripsi", sejarahData.deskripsi_sejarah);
-        form.append("judulEn", sejarahData.judul_sejarah_en);
-        form.append("deskripsiEn", sejarahData.deskripsi_sejarah_en);
 
         try {
             // Menggunakan instance apiAdmin untuk mengirimkan request
@@ -500,7 +476,6 @@ const Profil = () => {
                     imagePreview={imagePreview}
                     imageFieldName="image_background"
                     textAreaFieldName="deskripsi_tentang_kami"
-                    textAreaFieldNameEn="deskripsi_tentang_kami_en"
                 />
 
                 <Section
@@ -511,7 +486,6 @@ const Profil = () => {
                     handleSave={() => handleSaveSejarah()} // Panggil handleSaveSejarah
                     handleChange={handleChange}
                     textAreaFieldName="deskripsi_sejarah"
-                    textAreaFieldNameEn="deskripsi_sejarah_en"
                 />
 
                 {/* Founder */}
@@ -578,30 +552,6 @@ const Profil = () => {
                                         setFormFounder({
                                             ...formFounder,
                                             deskripsi: editor.getHTML(),
-                                        });
-                                    }}
-                                    modules={quillModules}
-                                    formats={quillFormats}
-                                    className="bg-white"
-                                />
-                            </div>
-
-                            {/* Add an English description field with ReactQuill */}
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Deskripsi Founder (Bahasa Inggris)
-                                </label>
-                                <ReactQuill
-                                    value={formFounder.deskripsiEn || ""}
-                                    onChange={(
-                                        content,
-                                        delta,
-                                        source,
-                                        editor,
-                                    ) => {
-                                        setFormFounder({
-                                            ...formFounder,
-                                            deskripsiEn: editor.getHTML(),
                                         });
                                     }}
                                     modules={quillModules}
@@ -697,30 +647,7 @@ const Profil = () => {
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080] disabled:bg-gray-100"
                                     />
                                 </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Jabatan Founder (Bahasa Inggris)
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="jabatanEn"
-                                        value={
-                                            selectedFounder === founder.id
-                                                ? formFounder.jabatanEn
-                                                : founder.jabatanEn
-                                        }
-                                        disabled={
-                                            selectedFounder !== founder.id
-                                        }
-                                        onChange={(e) =>
-                                            setFormFounder({
-                                                ...formFounder,
-                                                jabatanEn: e.target.value,
-                                            })
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080] disabled:bg-gray-100"
-                                    />
-                                </div>
+
                                 {/* Modifikasi bagian ReactQuill di dalam kondisi selectedFounder */}
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -759,44 +686,6 @@ const Profil = () => {
                                     )}
                                 </div>
 
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Deskripsi Founder (Bahasa Inggris)
-                                    </label>
-                                    {selectedFounder === founder.id ? (
-                                        <div className="border border-gray-300 rounded-lg overflow-hidden">
-                                            <ReactQuill
-                                                value={
-                                                    formFounder.deskripsiEn ||
-                                                    ""
-                                                }
-                                                onChange={(
-                                                    content,
-                                                    delta,
-                                                    source,
-                                                    editor,
-                                                ) => {
-                                                    setFormFounder({
-                                                        ...formFounder,
-                                                        deskripsiEn:
-                                                            editor.getHTML(),
-                                                    });
-                                                }}
-                                                modules={quillModules}
-                                                formats={quillFormats}
-                                                className="bg-white"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
-                                            dangerouslySetInnerHTML={{
-                                                __html:
-                                                    founder.deskripsiEn || "",
-                                            }}
-                                        />
-                                    )}
-                                </div>
                                 {selectedFounder === founder.id ? (
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -984,7 +873,6 @@ const Section = ({
     imagePreview,
     imageFieldName,
     textAreaFieldName,
-    textAreaFieldNameEn,
     includeFields = [],
 }) => {
     const modules = {
@@ -1059,20 +947,6 @@ const Section = ({
                 />
             )}
 
-            {["Profil", "Sejarah"].includes(title) && (
-                <InputField
-                    label={`Judul ${title} Bahasa Inggris`}
-                    name={title === "Profil" ? "judul_en" : "judul_sejarah_en"}
-                    value={
-                        title === "Profil"
-                            ? formData.judul_en
-                            : formData.judul_sejarah_en
-                    }
-                    onChange={handleChange}
-                    isDisabled={!editMode}
-                />
-            )}
-
             {includeFields.includes("nama") && (
                 <InputField
                     label="Nama Founder"
@@ -1088,16 +962,6 @@ const Section = ({
                     label="Jabatan Founder"
                     name="jabatan"
                     value={formData.jabatan || ""}
-                    onChange={handleChange}
-                    isDisabled={!editMode}
-                />
-            )}
-
-            {includeFields.includes("jabatanEn") && (
-                <InputField
-                    label="Jabatan Founder (Bahasa Inggris)"
-                    name="jabatanEn"
-                    value={formData.jabatanEn || ""}
                     onChange={handleChange}
                     isDisabled={!editMode}
                 />
@@ -1143,39 +1007,6 @@ const Section = ({
                         value={formData[textAreaFieldName] || ""}
                         onChange={(content, delta, source, editor) =>
                             handleChange(textAreaFieldName, null, editor)
-                        }
-                        modules={modules}
-                        formats={formats}
-                        readOnly={!editMode}
-                        className={`
-              ${!editMode && "quill-readonly"}
-            `}
-                    />
-                </div>
-            </div>
-
-            <div className="mb-4">
-                <label
-                    htmlFor={textAreaFieldNameEn}
-                    className="block text-[#000080] font-semibold mb-2"
-                >
-                    {`Deskripsi ${title} Bahasa Inggris`}
-                </label>
-                <div
-                    className={`
-          border rounded-md overflow-hidden transition-colors duration-300
-          ${
-              editMode
-                  ? "border-yellow-400 bg-white"
-                  : "border-gray-300 bg-gray-100"
-          }
-        `}
-                >
-                    <ReactQuill
-                        id={textAreaFieldNameEn}
-                        value={formData[textAreaFieldNameEn] || ""}
-                        onChange={(content, delta, source, editor) =>
-                            handleChange(textAreaFieldNameEn, null, editor)
                         }
                         modules={modules}
                         formats={formats}

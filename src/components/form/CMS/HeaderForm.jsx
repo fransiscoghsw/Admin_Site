@@ -15,9 +15,7 @@ const HeaderForm = () => {
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
-        titleEn: "",
         subTitle: "",
-        subTitleEn: "",
         image: null,
     });
     const [previewImage, setPreviewImage] = useState("");
@@ -29,24 +27,21 @@ const HeaderForm = () => {
                 setDasboardFrontpage(data);
 
                 if (data) {
-                    // Asumsikan data memiliki struktur seperti { id: {...}, en: {...} }
                     setFormData({
                         title: data.title || "",
-                        titleEn: data.titleEn || "",
                         subTitle: data.subTitle || "",
-                        subTitleEn: data.subTitleEn || "",
                         image: data.image || "",
                     });
 
                     setPreviewImage(
                         `${import.meta.env.VITE_API_URL}/homepage/image/${
                             data.image
-                        }`
+                        }`,
                     );
                 }
             },
             "id",
-            "en"
+            "en",
         );
     }, []);
 
@@ -129,9 +124,7 @@ const HeaderForm = () => {
         if (validateForm()) {
             const dataToSend = new FormData();
             dataToSend.append("title", formData.title);
-            dataToSend.append("titleEn", formData.titleEn);
             dataToSend.append("subTitle", formData.subTitle);
-            dataToSend.append("subTitleEn", formData.subTitleEn);
             if (formData.image) {
                 dataToSend.append("image", formData.image);
             }
@@ -140,7 +133,7 @@ const HeaderForm = () => {
                 setDasboardFrontpage([newData]);
                 setEditMode(false);
                 setPreviewImage(
-                    `${import.meta.env.VITE_API_URL}/homepage/image/${newData}`
+                    `${import.meta.env.VITE_API_URL}/homepage/image/${newData}`,
                 );
 
                 if (isDataEmpty) {
@@ -185,8 +178,8 @@ const HeaderForm = () => {
                         !isDataEmpty && !editMode
                             ? "border-gray-50"
                             : errors.image
-                            ? "border-red-500"
-                            : "border-gray-300"
+                              ? "border-red-500"
+                              : "border-gray-300"
                     }`}
                 >
                     {/* Preview image yang dipilih */}
@@ -270,21 +263,6 @@ const HeaderForm = () => {
             />
             <InputError message={errors.title} />
 
-            <Label htmlFor={"titleEn"} value={"Judul (Bahasa Inggris)"} />
-            <Input
-                type={"text"}
-                name={"titleEn"}
-                placeholder={"Masukkan judul dalam Bahasa Inggris"}
-                variant={
-                    isDataEmpty || editMode ? "primary-outline" : "disabled"
-                }
-                value={formData.titleEn}
-                handleChange={handleTextChange}
-                isDisabled={!isDataEmpty && !editMode}
-                isError={!!errors.title}
-            />
-            <InputError message={errors.title} />
-
             <Label htmlFor={"subTitle"} value={"Sub Judul"} />
             <Input
                 type={"text"}
@@ -299,24 +277,6 @@ const HeaderForm = () => {
                 isError={!!errors.subTitle}
             />
             <InputError message={errors.subTitle} />
-
-            <Label
-                htmlFor={"subTitleEn"}
-                value={"Sub Judul dalam Bahasa Inggris"}
-            />
-            <Input
-                type={"text"}
-                name={"subTitleEn"}
-                placeholder={"Masukkan sub title dalam Bahasa Inggris"}
-                variant={
-                    isDataEmpty || editMode ? "primary-outline" : "disabled"
-                }
-                value={formData.subTitleEn}
-                handleChange={handleTextChange}
-                isDisabled={!isDataEmpty && !editMode}
-                isError={!!errors.subTitle}
-            />
-            <InputError message={errors.subTitleEn} />
         </div>
     );
 };
