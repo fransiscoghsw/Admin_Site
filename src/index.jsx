@@ -25,7 +25,6 @@ import Profil from "./pages/cms/tentang_kami/Profil";
 import Dokumentasi from "./pages/cms/tentang_kami/Dokumentasi";
 import Customer from "./pages/cms/tentang_kami/Customer";
 import Partner from "./pages/cms/tentang_kami/Partner";
-import Dokumen from "./pages/cms/tentang_kami/Dokumen";
 import Kontak from "./pages/cms/tentang_kami/Kontak";
 import AdminArtikel from "./pages/cms/artikel/Index";
 import ArticleDetail from "./pages/cms/artikel/ArticleDetail";
@@ -164,16 +163,6 @@ const router = createBrowserRouter([
             <AuthAdminProvider>
                 <ProtectedRouteAdmin requiredRoles={["Super Admin", "Admin"]}>
                     <Partner />
-                </ProtectedRouteAdmin>
-            </AuthAdminProvider>
-        ),
-    },
-    {
-        path: "/cms/dokumen",
-        element: (
-            <AuthAdminProvider>
-                <ProtectedRouteAdmin requiredRoles={["Super Admin", "Admin"]}>
-                    <Dokumen />
                 </ProtectedRouteAdmin>
             </AuthAdminProvider>
         ),

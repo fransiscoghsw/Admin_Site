@@ -1,101 +1,25 @@
 import Button from "../../../components/common/Button";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import AdminLayout from "../../../layouts/AdminLayout";
-import {
-    getAbouts,
-    getAboutSejarahs,
-    getFounder,
-} from "../../../services/about.service";
-
-import {
-    getFounders,
-    addFounder,
-    updateFounder,
-    deleteFounder,
-} from "../../../services/founder.service";
+import { getAbouts } from "../../../services/about.service";
 import apiAdmin from "../../../lib/axios";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import { PiNotePencil, PiPlus, PiTrash } from "react-icons/pi";
+import { PiNotePencil } from "react-icons/pi";
 
 const Profil = () => {
-    // Define these at the top of your file, outside the component
-    const quillModules = {
-        toolbar: [
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            [{ font: [] }],
-            [{ size: ["small", false, "large", "huge"] }],
-            ["bold", "italic", "underline", "strike"],
-            [{ color: [] }, { background: [] }],
-            [{ script: "sub" }, { script: "super" }],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ indent: "-1" }, { indent: "+1" }],
-            [{ direction: "rtl" }],
-            [{ align: [] }],
-            ["blockquote", "code-block"],
-            ["link", "image", "video"],
-            ["clean"],
-        ],
-    };
-
-    const quillFormats = [
-        "header",
-        "font",
-        "size",
-        "bold",
-        "italic",
-        "underline",
-        "strike",
-        "color",
-        "background",
-        "script",
-        "list",
-        "bullet",
-        "indent",
-        "direction",
-        "align",
-        "blockquote",
-        "code-block",
-        "link",
-        "image",
-        "video",
-    ];
-
     const [formData, setFormData] = useState({
         judul: "",
         image_background: null,
         deskripsi_tentang_kami: "",
     });
 
-    const [sejarahData, setSejarahData] = useState({
-        judul_sejarah: "",
-        deskripsi_sejarah: "",
-    });
-
-    const [founders, setFounders] = useState([]);
-    const [formFounder, setFormFounder] = useState({
-        nama: "",
-        jabatan: "",
-        deskripsi: "",
-        gambar: null,
-    });
-    const [showFormFounder, setShowFormFounder] = useState(false);
-    const [selectedFounder, setSelectedFounder] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
-
-    const [founderData, setFounderData] = useState([]);
     const [editMode, setEditMode] = useState({
         tentangKami: false,
-        sejarah: false,
-        founder: false,
     });
 
     const [imagePreview, setImagePreview] = useState(null);
-    const [imagePreviewFounder, setImagePreviewFounder] = useState({});
-    const [imagePreviewForm, setImagePreviewForm] = useState(null);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-    const [founderToDelete, setFounderToDelete] = useState(null);
 
     useEffect(() => {
         getAbouts((data) => {
@@ -110,170 +34,15 @@ const Profil = () => {
                 }`,
             );
         });
-
-        getAboutSejarahs((data) => {
-            setSejarahData({
-                judul_sejarah: data.judul || "",
-                deskripsi_sejarah: data.deskripsi || "",
-            });
-        });
-
-        getFounder((data) => {
-            const foundersData = data.data.map((founder) => ({
-                nama: founder.nama || "",
-                jabatan: founder.jabatan || "",
-                deskripsi_founder: founder.deskripsi || "",
-                gambar: founder.gambar || null,
-                gambarPreview: `${import.meta.env.VITE_API_URL}/founder/image/${
-                    founder.gambar
-                }`,
-                id: founder.id || null,
-            }));
-            setFounderData(foundersData);
-        });
     }, []);
 
-    useEffect(() => {
-        // Mengambil data founder dan URL gambar
-        getFounders(async (data) => {
-            setFounders(data);
-
-            // Ambil preview gambar untuk setiap founder
-            const previews = {};
-            for (const founder of data) {
-                if (founder.gambar) {
-                    try {
-                        const imageUrl = `${
-                            import.meta.env.VITE_API_URL
-                        }/founder/image/${founder.gambar}`;
-                        previews[founder.id] = imageUrl;
-                    } catch (error) {
-                        console.error(
-                            `Error fetching image for founder with id ${founder.id}:`,
-                            error,
-                        );
-                    }
-                }
-            }
-            setImagePreviewFounder(previews);
-        });
-    }, []);
-
-    const handleToggleFormFounder = () => {
-        setShowFormFounder(!showFormFounder);
-    };
-
-    const handleFounderInputChange = (e) => {
-        const { name, value, files } = e.target;
-
-        if (name === "gambar" && files.length > 0) {
-            const file = files[0];
-            setImagePreviewForm(URL.createObjectURL(file)); // Set preview URL
-            setFormFounder({ ...formFounder, [name]: file });
-        } else {
-            setFormFounder({ ...formFounder, [name]: value });
-        }
-    };
-
-    const handleAddFounder = () => {
-        const form = new FormData();
-        form.append("nama", formFounder.nama);
-        form.append("jabatan", formFounder.jabatan);
-        form.append("deskripsi", formFounder.deskripsi);
-        form.append("gambar", formFounder.gambar);
-
-        addFounder(form, (response) => {
-            // Perbarui daftar founders
-            setFounders([response, ...founders]);
-
-            // Perbarui imagePreviewFounder dengan URL gambar yang baru
-            setImagePreviewFounder((prev) => ({
-                ...prev,
-                [response.id]: `${import.meta.env.VITE_API_URL}/founder/image/${
-                    response.gambar
-                }`,
-            }));
-
-            // Reset form
-            setFormFounder({
-                nama: "",
-                jabatan: "",
-                deskripsi: "",
-                gambar: null,
-            });
-            setImagePreviewForm(null);
-
-            // Tutup form
-            setShowFormFounder(false);
-        });
-    };
-
-    const handleEditFounder = (founder) => {
-        setSelectedFounder(founder.id);
-        setIsEditing(true);
-        setFormFounder({
-            nama: founder.nama,
-            jabatan: founder.jabatan,
-            deskripsi: founder.deskripsi,
-            gambar: founder.gambar,
-        });
-    };
-
-    // Fungsi untuk menangani update founder
-    const handleUpdateFounders = (id) => {
-        const form = new FormData();
-        form.append("nama", formFounder.nama);
-        form.append("jabatan", formFounder.jabatan);
-        form.append("deskripsi", formFounder.deskripsi);
-        if (formFounder.gambar instanceof File) {
-            form.append("gambar", formFounder.gambar);
-        }
-
-        // Update founder API
-        updateFounder(id, form, (updateData) => {
-            setFounders((prevFounders) =>
-                prevFounders.map((item) =>
-                    item.id === updateData.id ? updateData : item,
-                ),
-            );
-        });
-
-        // Reset state setelah penyimpanan
-        setIsEditing(false);
-        setSelectedFounder(null);
-    };
-
-    const handleChange = (name, index = null, editor = null) => {
-        // Handling ReactQuill input
+    const handleChange = (name, editor = null) => {
         if (editor) {
             const value = editor.getHTML();
-
-            if (
-                [
-                    "deskripsi_tentang_kami",
-                    "deskripsi_tentang_kami_en",
-                ].includes(name)
-            ) {
-                setFormData((prevData) => ({ ...prevData, [name]: value }));
-            } else if (
-                ["deskripsi_sejarah", "deskripsi_sejarah_en"].includes(name)
-            ) {
-                setSejarahData((prevData) => ({
-                    ...prevData,
-                    [name]: value,
-                }));
-            } else if (name === "deskripsi_founder" && index !== null) {
-                const updatedFounderData = [...founderData];
-                updatedFounderData[index] = {
-                    ...updatedFounderData[index],
-                    [name]: value,
-                };
-                setFounderData(updatedFounderData);
-            }
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
             return;
         }
 
-        // Handling standard HTML input
         const { value, files } = name.target;
         const inputName = name.target.name;
 
@@ -282,71 +51,12 @@ const Profil = () => {
             if (inputName === "image_background") {
                 setFormData((prevData) => ({ ...prevData, [inputName]: file }));
                 handleImagePreview(file, setImagePreview);
-            } else if (inputName === "gambar" && index !== null) {
-                const updatedFounderData = [...founderData];
-                updatedFounderData[index] = {
-                    ...updatedFounderData[index],
-                    gambar: file,
-                    gambarPreview: URL.createObjectURL(file),
-                };
-                setFounderData(updatedFounderData);
             }
         } else {
-            // Handle text inputs for Tentang Kami
-            if (
-                [
-                    "judul",
-                    "judul_en",
-                    "deskripsi_tentang_kami",
-                    "deskripsi_tentang_kami_en",
-                ].includes(inputName)
-            ) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [inputName]: value,
-                }));
-            }
-            // Handle text inputs for Sejarah
-            else if (
-                [
-                    "judul_sejarah",
-                    "judul_sejarah_en",
-                    "deskripsi_sejarah",
-                    "deskripsi_sejarah_en",
-                ].includes(inputName)
-            ) {
-                setSejarahData((prevData) => ({
-                    ...prevData,
-                    [inputName]: value,
-                }));
-            }
-            // Handle Founder inputs
-            else if (
-                inputName === "nama" ||
-                inputName === "jabatan" ||
-                inputName === "deskripsi_founder"
-            ) {
-                if (index === null) {
-                    setFounderData((prevData) => [
-                        ...prevData,
-                        {
-                            nama: inputName === "nama" ? value : "",
-                            jabatan: inputName === "jabatan" ? value : "",
-                            deskripsi_founder:
-                                inputName === "deskripsi_founder" ? value : "",
-                            gambar: null,
-                            gambarPreview: null,
-                        },
-                    ]);
-                } else {
-                    const updatedFounderData = [...founderData];
-                    updatedFounderData[index] = {
-                        ...updatedFounderData[index],
-                        [inputName]: value,
-                    };
-                    setFounderData(updatedFounderData);
-                }
-            }
+            setFormData((prevData) => ({
+                ...prevData,
+                [inputName]: value,
+            }));
         }
     };
 
@@ -358,62 +68,8 @@ const Profil = () => {
         reader.readAsDataURL(file);
     };
 
-    const handleDeleteClick = (founder) => {
-        setFounderToDelete(founder);
-        setShowConfirmDialog(true);
-    };
-
-    const handleConfirmDelete = async () => {
-        if (!founderToDelete) return;
-
-        try {
-            setIsDeleting(true);
-            await deleteFounder(founderToDelete.id);
-
-            setFounders((prevData) => {
-                const updatedData = prevData.filter(
-                    (founder) => founder.id !== founderToDelete.id,
-                );
-                return updatedData;
-            });
-        } catch (error) {
-            console.error("Error deleting founder:", error);
-        } finally {
-            setIsDeleting(false);
-            setShowConfirmDialog(false);
-            setFounderToDelete(null);
-        }
-    };
-
-    const handleCancelDelete = () => {
-        setShowConfirmDialog(false);
-        setFounderToDelete(null);
-    };
-
-    const handleEdit = (section, index = null) => {
-        if (section === "founder") {
-            if (index === null) {
-                // Menambahkan founder baru
-                setFounderData((prevData) => [
-                    ...prevData,
-                    {
-                        nama: "",
-                        jabatan: "",
-                        deskripsi_founder: "",
-                        gambar: null,
-                        gambarPreview: null,
-                    },
-                ]);
-                setCurrentFounderIndex(founderData.length); // Menetapkan index founder baru
-            } else {
-                setCurrentFounderIndex(index); // Mengatur index jika mengedit founder yang ada
-            }
-            setEditMode((prevMode) => ({ ...prevMode, [section]: true }));
-            setActionType(index === null ? "create" : "update");
-        } else {
-            setEditMode((prevMode) => ({ ...prevMode, [section]: true }));
-            setActionType("create");
-        }
+    const handleEdit = (section) => {
+        setEditMode((prevMode) => ({ ...prevMode, [section]: true }));
     };
 
     const handleSaveTentangKami = async () => {
@@ -422,43 +78,34 @@ const Profil = () => {
         form.append("judul", formData.judul);
         form.append("deskripsi", formData.deskripsi_tentang_kami);
 
-        if (formData.image_background) {
+        if (formData.image_background instanceof File) {
             form.append("image_background", formData.image_background);
         }
 
         try {
-            const response = await apiAdmin.post("/tentang-kami", form, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            console.log("API Response:", response.data);
-            console.log("State formData:", formData);
-            console.log("Form data being sent:", Object.fromEntries(form));
+            const response = await apiAdmin.post("/tentang-kami", form);
+            const savedData = response.data?.data || response.data;
+
+            if (savedData) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    judul: savedData.judul || prevData.judul,
+                    deskripsi_tentang_kami:
+                        savedData.deskripsi || prevData.deskripsi_tentang_kami,
+                    image_background:
+                        savedData.image_background || prevData.image_background,
+                }));
+
+                if (savedData.image_background) {
+                    setImagePreview(
+                        `${import.meta.env.VITE_API_URL}/tentang-kami/image/${savedData.image_background}`,
+                    );
+                }
+            }
+
             setEditMode((prevMode) => ({ ...prevMode, tentangKami: false }));
         } catch (error) {
             console.error("Error saving Tentang Kami:", error);
-        }
-    };
-
-    const handleSaveSejarah = async () => {
-        const form = new FormData();
-        console.log("Data sebelum dikirim:", sejarahData);
-        form.append("judul", sejarahData.judul_sejarah);
-        form.append("deskripsi", sejarahData.deskripsi_sejarah);
-
-        try {
-            // Menggunakan instance apiAdmin untuk mengirimkan request
-            await apiAdmin.post("/sejarah", form, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            // Reset edit mode after save
-            setEditMode((prevMode) => ({ ...prevMode, sejarah: false }));
-        } catch (error) {
-            console.error("Error saving Sejarah:", error);
         }
     };
 
@@ -477,352 +124,6 @@ const Profil = () => {
                     imageFieldName="image_background"
                     textAreaFieldName="deskripsi_tentang_kami"
                 />
-
-                <Section
-                    title="Sejarah"
-                    formData={sejarahData}
-                    editMode={editMode.sejarah}
-                    handleEdit={() => handleEdit("sejarah")}
-                    handleSave={() => handleSaveSejarah()} // Panggil handleSaveSejarah
-                    handleChange={handleChange}
-                    textAreaFieldName="deskripsi_sejarah"
-                />
-
-                {/* Founder */}
-                <div className="bg-[#F5F5F7] w-full rounded-2xl shadow-md py-4 px-6">
-                    <div className="flex flex-col md:flex-row md:justify-between mb-5">
-                        <h1 className="font-bold text-[#000080] text-xl mb-2 md:mb-0">
-                            Founder
-                        </h1>
-
-                        <Button
-                            variant={
-                                showFormFounder ? "primary_outline" : "create"
-                            }
-                            size="md"
-                            onClick={handleToggleFormFounder}
-                        >
-                            {showFormFounder ? null : (
-                                <PiPlus className="w-5 h-5 shrink-0" />
-                            )}
-                            {showFormFounder ? "Tutup Form" : "Tambah"}
-                        </Button>
-                    </div>
-
-                    {showFormFounder && (
-                        <div className="mb-6">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Nama Founder
-                                </label>
-                                <input
-                                    type="text"
-                                    name="nama"
-                                    placeholder="Masukkan nama founder.."
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080]"
-                                    onChange={handleFounderInputChange}
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Jabatan Founder
-                                </label>
-                                <input
-                                    type="text"
-                                    name="jabatan"
-                                    placeholder="Masukkan jabatan founder.."
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080]"
-                                    onChange={handleFounderInputChange}
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Deskripsi Founder
-                                </label>
-                                <ReactQuill
-                                    value={formFounder.deskripsi || ""}
-                                    onChange={(
-                                        content,
-                                        delta,
-                                        source,
-                                        editor,
-                                    ) => {
-                                        setFormFounder({
-                                            ...formFounder,
-                                            deskripsi: editor.getHTML(),
-                                        });
-                                    }}
-                                    modules={quillModules}
-                                    formats={quillFormats}
-                                    className="bg-white"
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Gambar Founder
-                                </label>
-                                <input
-                                    type="file"
-                                    name="gambar"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080]"
-                                    onChange={handleFounderInputChange}
-                                />
-                            </div>
-
-                            {imagePreviewForm && (
-                                <div className="mt-3 mb-5">
-                                    <p>Preview Gambar:</p>
-                                    <img
-                                        src={imagePreviewForm}
-                                        alt="Preview Founder"
-                                        className="h-32 w-32 object-cover rounded-lg"
-                                    />
-                                </div>
-                            )}
-
-                            <Button
-                                variant="primary"
-                                size="md"
-                                onClick={handleAddFounder}
-                            >
-                                Simpan
-                            </Button>
-                        </div>
-                    )}
-
-                    <div className="mt-10 mb-8">
-                        {founders.map((founder) => (
-                            <div
-                                key={founder.id}
-                                className="bg-white rounded-lg shadow-md p-4 mb-4"
-                            >
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Nama Founder
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="nama"
-                                        value={
-                                            selectedFounder === founder.id
-                                                ? formFounder.nama
-                                                : founder.nama
-                                        }
-                                        disabled={
-                                            selectedFounder !== founder.id
-                                        }
-                                        onChange={(e) =>
-                                            setFormFounder({
-                                                ...formFounder,
-                                                nama: e.target.value,
-                                            })
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080] disabled:bg-gray-100"
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Jabatan Founder
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="jabatan"
-                                        value={
-                                            selectedFounder === founder.id
-                                                ? formFounder.jabatan
-                                                : founder.jabatan
-                                        }
-                                        disabled={
-                                            selectedFounder !== founder.id
-                                        }
-                                        onChange={(e) =>
-                                            setFormFounder({
-                                                ...formFounder,
-                                                jabatan: e.target.value,
-                                            })
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080] disabled:bg-gray-100"
-                                    />
-                                </div>
-
-                                {/* Modifikasi bagian ReactQuill di dalam kondisi selectedFounder */}
-                                <div className="mb-4">
-                                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                                        Deskripsi Founder
-                                    </label>
-                                    {selectedFounder === founder.id ? (
-                                        <div className="border border-gray-300 rounded-lg overflow-hidden">
-                                            <ReactQuill
-                                                value={
-                                                    formFounder.deskripsi || ""
-                                                }
-                                                onChange={(
-                                                    content,
-                                                    delta,
-                                                    source,
-                                                    editor,
-                                                ) => {
-                                                    setFormFounder({
-                                                        ...formFounder,
-                                                        deskripsi:
-                                                            editor.getHTML(),
-                                                    });
-                                                }}
-                                                modules={quillModules}
-                                                formats={quillFormats}
-                                                className="bg-white"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
-                                            dangerouslySetInnerHTML={{
-                                                __html: founder.deskripsi || "",
-                                            }}
-                                        />
-                                    )}
-                                </div>
-
-                                {selectedFounder === founder.id ? (
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">
-                                            Gambar Founder
-                                        </label>
-                                        <input
-                                            type="file"
-                                            name="gambar"
-                                            onChange={(e) => {
-                                                const file = e.target.files[0];
-                                                if (file) {
-                                                    setFormFounder({
-                                                        ...formFounder,
-                                                        gambar: file,
-                                                    });
-                                                    setImagePreviewFounder({
-                                                        ...imagePreviewFounder,
-                                                        [founder.id]:
-                                                            URL.createObjectURL(
-                                                                file,
-                                                            ),
-                                                    });
-                                                }
-                                            }}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#000080]"
-                                        />
-                                        {imagePreviewFounder[founder.id] && (
-                                            <div className="mt-3 mb-5">
-                                                <p>Preview Gambar:</p>
-                                                <img
-                                                    src={
-                                                        imagePreviewFounder[
-                                                            founder.id
-                                                        ]
-                                                    }
-                                                    alt="Preview Founder"
-                                                    className="h-32 w-32 object-cover rounded-lg"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="mt-3 mb-5">
-                                        <p>Gambar Founder:</p>
-                                        <img
-                                            src={
-                                                imagePreviewFounder[
-                                                    founder.id
-                                                ] || founder.gambar
-                                            }
-                                            alt={`Founder ${founder.nama}`}
-                                            className="h-32 w-32 object-cover rounded-lg"
-                                            onError={(e) => {
-                                                e.target.onerror = null;
-                                                e.target.src =
-                                                    "/placeholder-image.jpg";
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                                <div className="flex justify-start">
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <Button
-                                            variant="delete"
-                                            size="md"
-                                            onClick={() =>
-                                                handleDeleteClick(founder)
-                                            }
-                                            disabled={isDeleting}
-                                        >
-                                            <PiTrash className="w-5 h-5 shrink-0" />
-                                            Hapus
-                                        </Button>
-
-                                        {selectedFounder === founder.id &&
-                                        isEditing ? (
-                                            <Button
-                                                variant="primary"
-                                                size="md"
-                                                onClick={() =>
-                                                    handleUpdateFounders(
-                                                        founder.id,
-                                                    )
-                                                }
-                                            >
-                                                Simpan
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                variant="update"
-                                                size="md"
-                                                onClick={() =>
-                                                    handleEditFounder(founder)
-                                                }
-                                            >
-                                                <PiNotePencil className="w-5 h-5 shrink-0" />
-                                                Ubah
-                                            </Button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Custom Confirmation Dialog */}
-                    {showConfirmDialog && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                            <div className="bg-white rounded-lg p-6 max-w-sm w-full">
-                                <h2 className="text-xl font-bold mb-4">
-                                    Konfirmasi Hapus
-                                </h2>
-                                <p className="text-gray-600 mb-6">
-                                    Apakah Anda yakin ingin menghapus data
-                                    founder {founderToDelete?.nama}? Tindakan
-                                    ini tidak dapat dibatalkan.
-                                </p>
-                                <div className="flex justify-end gap-2">
-                                    <button
-                                        onClick={handleCancelDelete}
-                                        disabled={isDeleting}
-                                        className="px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
-                                    >
-                                        Batal
-                                    </button>
-                                    <button
-                                        onClick={handleConfirmDelete}
-                                        disabled={isDeleting}
-                                        className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 transition disabled:opacity-50"
-                                    >
-                                        {isDeleting ? "Menghapus..." : "Hapus"}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
             </div>
         </AdminLayout>
     );
@@ -863,6 +164,12 @@ const ImageUpload = ({ label, name, onChange }) => (
     </div>
 );
 
+ImageUpload.propTypes = {
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+
 const Section = ({
     title,
     formData,
@@ -873,7 +180,6 @@ const Section = ({
     imagePreview,
     imageFieldName,
     textAreaFieldName,
-    includeFields = [],
 }) => {
     const modules = {
         toolbar: [
@@ -933,39 +239,13 @@ const Section = ({
                 </Button>
             </div>
 
-            {["Profil", "Sejarah"].includes(title) && (
-                <InputField
-                    label={`Judul ${title}`}
-                    name={title === "Profil" ? "judul" : "judul_sejarah"}
-                    value={
-                        title === "Profil"
-                            ? formData.judul
-                            : formData.judul_sejarah
-                    }
-                    onChange={handleChange}
-                    isDisabled={!editMode}
-                />
-            )}
-
-            {includeFields.includes("nama") && (
-                <InputField
-                    label="Nama Founder"
-                    name="nama"
-                    value={formData.nama || ""}
-                    onChange={handleChange}
-                    isDisabled={!editMode}
-                />
-            )}
-
-            {includeFields.includes("jabatan") && (
-                <InputField
-                    label="Jabatan Founder"
-                    name="jabatan"
-                    value={formData.jabatan || ""}
-                    onChange={handleChange}
-                    isDisabled={!editMode}
-                />
-            )}
+            <InputField
+                label={`Judul ${title}`}
+                name="judul"
+                value={formData.judul}
+                onChange={handleChange}
+                isDisabled={!editMode}
+            />
 
             {imagePreview && (
                 <div className="w-80 h-56 rounded-md overflow-hidden mb-4">
@@ -1006,7 +286,7 @@ const Section = ({
                         id={textAreaFieldName}
                         value={formData[textAreaFieldName] || ""}
                         onChange={(content, delta, source, editor) =>
-                            handleChange(textAreaFieldName, null, editor)
+                            handleChange(textAreaFieldName, editor)
                         }
                         modules={modules}
                         formats={formats}
@@ -1019,6 +299,26 @@ const Section = ({
             </div>
         </div>
     );
+};
+
+InputField.propTypes = {
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onChange: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
+};
+
+Section.propTypes = {
+    title: PropTypes.string.isRequired,
+    formData: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired,
+    handleEdit: PropTypes.func.isRequired,
+    handleSave: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    imagePreview: PropTypes.string,
+    imageFieldName: PropTypes.string,
+    textAreaFieldName: PropTypes.string.isRequired,
 };
 
 export default Profil;

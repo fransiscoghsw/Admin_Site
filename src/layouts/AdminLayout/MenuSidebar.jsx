@@ -4,7 +4,6 @@ import {
     PiUserCircleGear,
     PiHouse,
     PiQuestion,
-    PiArticle,
     PiStar,
     PiFarm,
 } from "react-icons/pi";
@@ -85,11 +84,6 @@ export const menuItems = [
                     {
                         name: "Partner",
                         path: "/cms/partner",
-                        roles: ["Super Admin", "Admin"],
-                    },
-                    {
-                        name: "Dokumen",
-                        path: "/cms/dokumen",
                         roles: ["Super Admin", "Admin"],
                     },
                     {
