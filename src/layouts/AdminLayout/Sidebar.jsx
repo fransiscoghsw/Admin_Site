@@ -120,24 +120,17 @@ const Sidebar = ({ userRole, isHovered, setIsHovered }) => {
             <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col px-3 py-10 bg-[#000080] rounded-2xl shadow-2xl custom-scrollbar">
                 <NavLink
                     to="/dashboard"
-                    className={`flex items-center space-x-3 mb-6 transition-all duration-300 ease-in-out ${
-                        isHovered ? "ml-2" : ""
-                    }`}
+                    className="flex items-center justify-center w-full mb-6 transition-all duration-300 ease-in-out"
                 >
-                    {/* <img
-                        src={LogogramPutih}
-                        className="h-14 w-10 ms-1"
-                        alt="Logogram Putih"
-                    /> */}
-                    <span
-                        className={`hidden group-hover:block self-center text-xl text-white font-semibold whitespace-nowrap transition-all duration-500 ease-in-out transform ${
-                            isHovered
-                                ? "translate-x-0 opacity-100"
-                                : "-translate-x-10 opacity-0"
-                        }`}
-                    >
-                        <img src={Logo} alt="Logo" />
-                    </span>
+                    <div className="mx-auto">
+                        <img
+                            src={Logo}
+                            alt="Logo"
+                            className={`rounded-full bg-white shadow-xl shadow-black/25 object-contain ${
+                                isHovered ? "h-20 w-20" : "h-10 w-10"
+                            }`}
+                        />
+                    </div>
                 </NavLink>
                 {renderMenu(menuItems)}
             </div>

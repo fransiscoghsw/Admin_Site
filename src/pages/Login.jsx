@@ -1,4 +1,4 @@
-import Logo from "../assets/images/Logo.png";
+import Logo from "../assets/images/logo.png";
 import Label from "../components/common/Label";
 import Input from "../components/common/Input";
 import InputError from "../components/common/InputError";
@@ -58,7 +58,7 @@ const Login = () => {
                         <img
                             src={Logo}
                             alt="Logo"
-                            className="w-12 h-12 sm:w-14 sm:h-14 md:w-60 md:h-24 mr-4"
+                            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain mr-4"
                         />
                     </div>
                     <form onSubmit={formik.handleSubmit}>
