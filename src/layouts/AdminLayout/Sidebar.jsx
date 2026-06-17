@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 // import LogogramPutih from "../../assets/images/Logogram Putih.svg";
-import Logo from "../../assets/images/Logo.png";
+import Logo from "../../assets/images/logo.png";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { PiCircleThin } from "react-icons/pi";
 import { menuItems } from "./MenuSidebar";
